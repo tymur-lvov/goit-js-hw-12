@@ -1,0 +1,26 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    color: #2e2f42;
+    background-color: #fff;
+}
+
+button {
+    border: none;
+}
+
+button:hover,
+button:focus {
+    background-color: #6c8cff;
+}
+
+input:focus {
+    border-color: #000;
+}
+
+:focus {
+    outline: none
+}
