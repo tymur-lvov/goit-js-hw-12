@@ -1,5 +1,7 @@
 @import url('./reset.css');
 @import url('./common.css');
+@import 'izitoast/dist/css/iziToast.min.css';
+@import 'simplelightbox/dist/simple-lightbox.min.css';
 
 .search-form {
     display: flex;
@@ -25,9 +27,11 @@
     width: 272px;
     height: 40px;
     padding: 8px 16px;
+    position: relative;
 }
 
-.search-button {
+.search-button,
+.load-button {
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
     font-size: 16px;
@@ -43,13 +47,22 @@
     height: 40px;
 }
 
+.load-button {
+    display: none;
+    margin: 0 auto;
+    width: 126px;
+    position: relative;
+
+    margin-top: auto;
+}
+
 .gallery {
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
     width: 1128px;
     margin: 0 auto;
-    /* position: relative; */
+    margin-bottom: 32px;
 }
 
 .gallery-item {
@@ -110,8 +123,7 @@
     animation: rotation 1s linear infinite;
 
     position: absolute;
-    left: 49%;
-    top: 39%;
+    left: 48.9%;
 }
 
 @keyframes rotation {
@@ -124,6 +136,6 @@
     }
 }
 
-.is-open {
-    display: inline-block;
+.is-visible {
+    display: block;
 }
