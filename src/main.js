@@ -30,11 +30,11 @@ const messages = {
   },
 };
 
-const options = {
+const lightboxOptions = {
   captionsData: 'alt',
   captionDelay: 250,
 };
-const imageModal = new SimpleLightbox('.gallery a', options);
+const imageModal = new SimpleLightbox('.gallery a', lightboxOptions);
 
 let currentPage = null;
 let searchInputValue = null;
@@ -45,6 +45,7 @@ const onSearchFormSubmit = async event => {
   currentPage = 1;
 
   elements.gallery.innerHTML = '';
+
   elements.loader.classList.add('is-visible');
   elements.loadButton.classList.remove('is-visible');
 
@@ -61,10 +62,9 @@ const onSearchFormSubmit = async event => {
     }
 
     elements.loader.classList.remove('is-visible');
+    elements.loadButton.classList.add('is-visible');
 
     elements.gallery.innerHTML = renderElements(data.hits);
-
-    elements.loadButton.classList.add('is-visible');
 
     imageModal.refresh();
   } catch (error) {
@@ -87,8 +87,9 @@ const onLoadButtonClick = async () => {
   try {
     const response = await getData(searchInputValue, currentPage);
     const { data } = response;
-    console.log(response);
+
     elements.loader.classList.remove('is-visible');
+    elements.loadButton.classList.add('is-visible');
 
     elements.gallery.insertAdjacentHTML('beforeend', renderElements(data.hits));
 
@@ -107,8 +108,6 @@ const onLoadButtonClick = async () => {
 
       return;
     }
-
-    elements.loadButton.classList.add('is-visible');
   } catch (error) {
     elements.loader.classList.remove('is-visible');
 
