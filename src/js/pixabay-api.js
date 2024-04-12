@@ -12,7 +12,7 @@ export const getData = async (searchQuery, currentPage) => {
       per_page: 15,
     },
   };
-  const response = await axios.get('https://pixabay.com/api', axiosOptions);
+  const response = await axios.get('https://pixabay.com/api/', axiosOptions);
 
   return response;
 };
