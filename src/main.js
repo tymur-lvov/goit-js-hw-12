@@ -38,12 +38,10 @@ const imageModal = new SimpleLightbox('.gallery a', options);
 
 let currentPage = null;
 let searchInputValue = null;
-let hitsCount = null;
 
-const onSearchFormSubmit = event => {
+const onSearchFormSubmit = async event => {
   event.preventDefault();
 
-  hitsCount = 15;
   currentPage = 1;
 
   elements.gallery.innerHTML = '';
@@ -52,69 +50,70 @@ const onSearchFormSubmit = event => {
 
   searchInputValue = event.srcElement.elements.search_input.value;
 
-  getData(searchInputValue, currentPage)
-    .then(response => {
-      if (response.data.hits.length === 0) {
-        messages.noMatches();
+  try {
+    const response = await getData(searchInputValue, currentPage);
+    const { data } = response;
 
-        return;
-      }
+    if (data.hits.length === 0) {
+      messages.noMatches();
 
-      elements.gallery.innerHTML = renderElements(response.data.hits);
+      return;
+    }
 
-      elements.loadButton.classList.add('is-visible');
+    elements.loader.classList.remove('is-visible');
 
-      imageModal.refresh();
-    })
-    .catch(error => {
-      console.log(error);
-    })
-    .finally(() => {
-      elements.loader.classList.remove('is-visible');
-    });
+    elements.gallery.innerHTML = renderElements(data.hits);
+
+    elements.loadButton.classList.add('is-visible');
+
+    imageModal.refresh();
+  } catch (error) {
+    elements.loader.classList.remove('is-visible');
+
+    console.log(error);
+  }
 };
 
-const onLoadButtonClick = () => {
+const onLoadButtonClick = async () => {
   const galleryItemDimensions = document
     .querySelector('.gallery-item')
     .getBoundingClientRect();
 
-  hitsCount += 15;
-  currentPage += 1;
+  currentPage++;
 
   elements.loadButton.classList.remove('is-visible');
   elements.loader.classList.add('is-visible');
 
-  getData(searchInputValue, currentPage)
-    .then(response => {
-      elements.gallery.insertAdjacentHTML(
-        'beforeend',
-        renderElements(response.data.hits)
-      );
+  try {
+    const response = await getData(searchInputValue, currentPage);
+    const { data } = response;
+    console.log(response);
+    elements.loader.classList.remove('is-visible');
 
-      imageModal.refresh();
+    elements.gallery.insertAdjacentHTML('beforeend', renderElements(data.hits));
 
-      scrollBy({
-        top: galleryItemDimensions.height * 2,
-        behavior: 'smooth',
-      });
+    imageModal.refresh();
 
-      if (hitsCount >= response.data.totalHits) {
-        messages.loadsLimit();
-
-        return;
-      }
-
-      elements.loadButton.classList.add('is-visible');
-    })
-    .catch(error => {
-      console.log(error);
-    })
-    .finally(() => {
-      elements.loader.classList.remove('is-visible');
+    scrollBy({
+      top: galleryItemDimensions.height * 2,
+      behavior: 'smooth',
     });
 
-  currentPage++;
+    if (
+      response.config.params.page * response.config.params.per_page >=
+      data.totalHits
+    ) {
+      messages.loadsLimit();
+
+      return;
+    }
+
+    elements.loadButton.classList.add('is-visible');
+  } catch (error) {
+    elements.loader.classList.remove('is-visible');
+
+    console.log(error);
+  }
 };
 
 elements.searchForm.addEventListener('submit', onSearchFormSubmit);
