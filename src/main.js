@@ -55,18 +55,25 @@ const onSearchFormSubmit = async event => {
     const response = await getData(searchInputValue, currentPage);
     const { data } = response;
 
+    elements.loader.classList.remove('is-visible');
+
     if (data.hits.length === 0) {
       messages.noMatches();
 
       return;
     }
 
-    elements.loader.classList.remove('is-visible');
-    elements.loadButton.classList.add('is-visible');
-
     elements.gallery.innerHTML = renderElements(data.hits);
 
     imageModal.refresh();
+
+    if (data.totalHits <= 15) {
+      messages.loadsLimit();
+
+      return;
+    }
+
+    elements.loadButton.classList.add('is-visible');
   } catch (error) {
     elements.loader.classList.remove('is-visible');
 
@@ -105,6 +112,8 @@ const onLoadButtonClick = async () => {
       data.totalHits
     ) {
       messages.loadsLimit();
+
+      elements.loadButton.classList.remove('is-visible');
 
       return;
     }
