@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getData = async (searchQuery, currentPage) => {
+export const getData = (searchQuery, currentPage) => {
   const axiosOptions = {
     params: {
       key: '43212506-95870309335e8ebf3ea9c8656',
@@ -12,7 +12,5 @@ export const getData = async (searchQuery, currentPage) => {
       per_page: 15,
     },
   };
-  const response = await axios.get('https://pixabay.com/api', axiosOptions);
-
-  return response;
+  return axios.get('https://pixabay.com/api', axiosOptions);
 };

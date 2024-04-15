@@ -40,18 +40,18 @@ let currentPage = null;
 let searchInputValue = null;
 
 const onSearchFormSubmit = async event => {
-  event.preventDefault();
-
-  currentPage = 1;
-
-  elements.gallery.innerHTML = '';
-
-  elements.loader.classList.add('is-visible');
-  elements.loadButton.classList.remove('is-visible');
-
-  searchInputValue = event.srcElement.elements.search_input.value;
-
   try {
+    event.preventDefault();
+
+    currentPage = 1;
+
+    elements.gallery.innerHTML = '';
+
+    elements.loader.classList.add('is-visible');
+    elements.loadButton.classList.remove('is-visible');
+
+    searchInputValue = event.srcElement.elements.search_input.value;
+
     const response = await getData(searchInputValue, currentPage);
     const { data } = response;
 
@@ -82,16 +82,16 @@ const onSearchFormSubmit = async event => {
 };
 
 const onLoadButtonClick = async () => {
-  const galleryItemDimensions = document
-    .querySelector('.gallery-item')
-    .getBoundingClientRect();
-
-  currentPage++;
-
-  elements.loadButton.classList.remove('is-visible');
-  elements.loader.classList.add('is-visible');
-
   try {
+    const galleryItemDimensions = document
+      .querySelector('.gallery-item')
+      .getBoundingClientRect();
+
+    currentPage++;
+
+    elements.loadButton.classList.remove('is-visible');
+    elements.loader.classList.add('is-visible');
+
     const response = await getData(searchInputValue, currentPage);
     const { data } = response;
 
