@@ -12,5 +12,6 @@ export const getData = (searchQuery, currentPage) => {
       per_page: 15,
     },
   };
+
   return axios.get('https://pixabay.com/api', axiosOptions);
 };

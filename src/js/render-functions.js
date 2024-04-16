@@ -1,5 +1,5 @@
-export const renderElements = searchData => {
-  return searchData
+export const renderElements = searchQuery => {
+  return searchQuery
     .map(img => {
       return `
       <li class="gallery-item"><a href="${img.largeImageURL}" class="gallery-link"><img src="${img.webformatURL}"
